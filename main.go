@@ -7,6 +7,21 @@ import (
 	"net/http"
 )
 
+type url struct {
+	Params params
+}
+
+// params構造体を引数にして、URLを生成するメソッド
+func (u *url) generate() string {
+	return "https://api.openweathermap.org/data/2.5/weather?q=" + u.Params.City + "&appid=" + u.Params.APIKey + "&units=" + u.Params.Units
+}
+
+type params struct {
+	City   string
+	APIKey string
+	Units  string
+}
+
 type weather struct {
 	Main struct {
 		Temp float64 `json:"temp"`
@@ -15,8 +30,17 @@ type weather struct {
 }
 
 func main() {
-	const apiKey = "cbefcca05496b015533c61d9740fcc28"
-	const url = "https://api.openweathermap.org/data/2.5/weather?q=Sapporo&appid=" + apiKey
+	// params構造体を初期化
+	p := params{
+		City:   "Sapporo",
+		APIKey: "cbefcca05496b015533c61d9740fcc28",
+		Units:  "metric",
+	}
+	// url構造体を初期化
+	u := url{
+		Params: p,
+	}
+	url := u.generate()
 
 	res, err := http.Get(url)
 	if err != nil {
