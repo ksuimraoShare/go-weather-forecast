@@ -23,9 +23,20 @@ type params struct {
 }
 
 type weather struct {
+	Weather []struct {
+		Main string `json:"main"`
+		desc string `json:"description"`
+	} `json:"weather"`
+
 	Main struct {
-		Temp float64 `json:"temp"`
+		Temp     float64 `json:"temp"`
+		Humidity float64 `json:"humidity"`
 	} `json:"main"`
+
+	Wind struct {
+		Speed float64 `json:"speed"`
+	}
+
 	Name string `json:"name"`
 }
 
@@ -62,5 +73,10 @@ func main() {
 		return
 	}
 
-	fmt.Printf("Temperture in %s : %f\n", w.Name, w.Main.Temp)
+	fmt.Println("場所 : " + w.Name)
+	fmt.Println("天気 : " + w.Weather[0].Main)
+	fmt.Println("天気詳細 : " + w.Weather[0].desc)
+	fmt.Println("気温 : " + fmt.Sprint(w.Main.Temp))
+	fmt.Println("湿度 : " + fmt.Sprint(w.Main.Humidity))
+	fmt.Println("風速 : " + fmt.Sprint(w.Wind.Speed))
 }
